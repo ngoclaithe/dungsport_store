@@ -3,8 +3,12 @@ from models import db
 from models.product import Product
 from models.order import Order
 from models.user import User
+from sqlalchemy import func, extract
+from datetime import datetime, timedelta
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
+import random
+import json
 
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix='/admin')
 
@@ -37,14 +41,91 @@ def login():
             flash("Tên đăng nhập hoặc mật khẩu không đúng!")
     return render_template("admin/login.html")
 
+def get_monthly_sales_data():
+    # Mock data for monthly sales
+    months = ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"]
+    current_month = datetime.now().month
+    
+    sales_data = []
+    for i in range(12):
+        # Create more realistic data with higher trend for current and recent months
+        if i < current_month:
+            sales = random.randint(100, 150) * (0.7 + (i / 12))
+        else:
+            sales = random.randint(80, 120) * (0.5 + (i / 24))
+        sales_data.append(int(sales))
+    
+    return {"labels": months, "data": sales_data}
+
+def get_category_sales():
+    # Mock data for category sales
+    categories = ["Giày thể thao", "Quần áo tập gym", "Đồ bơi", "Phụ kiện", "Dụng cụ thể thao"]
+    sales = [random.randint(200, 500) for _ in range(len(categories))]
+    return {"categories": categories, "sales": sales}
+
+def get_top_products():
+    # Mock data for top selling products
+    products = [
+        {"name": "Giày Nike Air Max", "sales": random.randint(80, 150)},
+        {"name": "Áo thun Adidas", "sales": random.randint(70, 140)},
+        {"name": "Quần short Under Armour", "sales": random.randint(60, 130)},
+        {"name": "Bộ tập Gym Puma", "sales": random.randint(50, 120)},
+        {"name": "Vớ thể thao Nike", "sales": random.randint(40, 110)}
+    ]
+    return sorted(products, key=lambda x: x["sales"], reverse=True)
+
 @dashboard_bp.route("/dashboard")
 @admin_required
 def dashboard():
     total_products = db.session.query(Product).count()
     total_orders = db.session.query(Order).count()
     total_users = db.session.query(User).count()
-
+    
+    # Mock data for dashboard
+    total_revenue = random.randint(2500, 5000) * 100000  # 250M - 500M VND
+    
+    # Calculate monthly revenue growth
+    current_month_revenue = random.randint(250, 450) * 100000
+    previous_month_revenue = random.randint(200, 400) * 100000
+    revenue_growth = ((current_month_revenue - previous_month_revenue) / previous_month_revenue) * 100
+    
+    # Get user growth
+    new_users_count = random.randint(20, 50)
+    user_growth = (new_users_count / total_users) * 100 if total_users > 0 else 0
+    
+    # Get monthly sales data for chart
+    monthly_sales = get_monthly_sales_data()
+    
+    # Get category sales data
+    category_sales = get_category_sales()
+    
+    # Get top selling products
+    top_products = get_top_products()
+    
+    # Format revenue for display
+    formatted_total_revenue = f"{total_revenue:,}".replace(",", ".")
+    formatted_month_revenue = f"{current_month_revenue:,}".replace(",", ".")
+    
+    # Pre-convert complex data to JSON for JavaScript
+    monthly_sales_json = {
+        "labels": json.dumps(monthly_sales["labels"]),
+        "data": json.dumps(monthly_sales["data"])
+    }
+    
+    category_sales_json = {
+        "categories": json.dumps(category_sales["categories"]),
+        "sales": json.dumps(category_sales["sales"])
+    }
+    
     return render_template("admin/dashboard.html",
                            total_products=total_products,
                            total_orders=total_orders,
-                           total_users=total_users)
+                           total_users=total_users,
+                           total_revenue=formatted_total_revenue,
+                           current_month_revenue=formatted_month_revenue,
+                           revenue_growth=f"{revenue_growth:.1f}",
+                           new_users=new_users_count,
+                           user_growth=f"{user_growth:.1f}",
+                           monthly_sales=monthly_sales_json,
+                           category_sales=category_sales_json,
+                           top_products=top_products)

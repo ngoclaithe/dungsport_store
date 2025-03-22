@@ -57,7 +57,7 @@ def update_order(order_id):
                 amount=order.total,
                 payment_method=order.payment_method,
                 payment_date=datetime.now(),
-                status="approved"
+                status="paid"
             )
             db.session.add(new_payment)
             

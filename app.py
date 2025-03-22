@@ -12,7 +12,7 @@ from routes.upload import upload_bp
 from routes.product_image import product_image_bp
 from routes.main import main_bp
 from routes.api import api_bp
-
+from routes.payment import payment_bp
 
 from config import Config
 
@@ -31,7 +31,7 @@ app.register_blueprint(upload_bp)
 app.register_blueprint(product_image_bp)
 app.register_blueprint(main_bp)
 app.register_blueprint(api_bp)
-
+app.register_blueprint(payment_bp)
 
 logging.basicConfig(
     level=logging.INFO,
