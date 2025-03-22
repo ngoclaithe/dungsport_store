@@ -1,0 +1,79 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Chi tiết đơn hàng - {{ order.order_id }}{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin_order_detail.css') }}">
+{% endblock %}
+{% block content %}
+  <h2>Chi tiết đơn hàng: {{ order.order_id }}</h2>
+  
+  <div class="order-info">
+    <h3>Thông tin đơn hàng</h3>
+    <p><strong>Mã đơn hàng:</strong> {{ order.order_id }}</p>
+    <p>
+      <strong>Ngày đặt:</strong>
+      {% if order.order_date %}
+        {{ order.order_date.strftime('%d/%m/%Y %H:%M') }}
+      {% endif %}
+    </p>
+    <p><strong>Trạng thái:</strong> {{ order.status }}</p>
+    <p><strong>Ghi chú:</strong> {{ order.note or 'Không có' }}</p>
+  </div>
+  
+  <div class="customer-info">
+    <h3>Thông tin khách hàng</h3>
+    <p><strong>Họ và tên:</strong> {{ order.customer_fullname }}</p>
+    <p><strong>Email:</strong> {{ order.customer_email }}</p>
+    <p><strong>Số điện thoại:</strong> {{ order.customer_phone }}</p>
+    <p>
+      <strong>Địa chỉ:</strong>
+      {{ order.customer_address_detail }}, {{ order.customer_ward }}, {{ order.customer_district }}, {{ order.customer_province }}
+    </p>
+  </div>
+  
+  <div class="payment-info">
+    <h3>Thông tin thanh toán</h3>
+    <p><strong>Phương thức thanh toán:</strong> {{ order.payment_method }}</p>
+    <p><strong>Tạm tính:</strong> {{ order.subtotal }} ₫</p>
+    <p><strong>Phí vận chuyển:</strong> {{ order.shipping_fee }} ₫</p>
+    <p><strong>Tổng tiền:</strong> {{ order.total }} ₫</p>
+  </div>
+  
+  <div class="order-details">
+    <h3>Danh sách sản phẩm</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID sản phẩm</th>
+          <th>Tên sản phẩm</th>
+          <th>Ảnh</th>
+          <th>Giá</th>
+          <th>Giá gốc</th>
+          <th>Số lượng</th>
+          <th>Màu sắc</th>
+          <th>Kích thước</th>
+          <th>Thương hiệu</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for detail in order_details %}
+        <tr>
+          <td>{{ detail.product_id }}</td>
+          <td>{{ detail.name }}</td>
+          <td>
+            <img src="{{ detail.image }}" alt="{{ detail.name }}" style="width: 50px; height: 50px; object-fit: cover;">
+          </td>
+          <td>{{ detail.price }} ₫</td>
+          <td>{{ detail.original_price }} ₫</td>
+          <td>{{ detail.quantity }}</td>
+          <td>{{ detail.color or 'N/A' }}</td>
+          <td>{{ detail.size or 'N/A' }}</td>
+          <td>{{ detail.brand }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <a href="{{ url_for('order.orders') }}" class="btn-back">Quay lại danh sách đơn hàng</a>
+{% endblock %}

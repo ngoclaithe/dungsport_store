@@ -1,0 +1,131 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{% if product %}Sửa sản phẩm{% else %}Thêm sản phẩm{% endif %}{% endblock %}
+
+{% block content %}
+<div class="product-form-container">
+    <h2>{% if product %}Sửa sản phẩm{% else %}Thêm sản phẩm{% endif %}</h2>
+    
+    <form id="productForm" action="{% if product %}{{ url_for('product.edit_product', id_product=product.id_product) }}{% else %}{{ url_for('product.add_product') }}{% endif %}" method="post">
+        {% if product %}
+        <input type="hidden" name="id_product" value="{{ product.id_product }}">
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="product_name">Tên sản phẩm:</label>
+            <input type="text" name="product_name" id="product_name" placeholder="Nhập tên sản phẩm" value="{{ product.product_name if product }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="price">Giá:</label>
+            <input type="number" name="price" id="price" placeholder="Nhập giá" value="{{ product.price if product }}" required step="0.01">
+        </div>
+        
+        <div class="form-group">
+            <label for="cost_price">Giá gốc:</label>
+            <input type="number" name="cost_price" id="cost_price" placeholder="Nhập giá gốc" value="{{ product.cost_price if product }}" step="0.01">
+        </div>
+        
+        <div class="form-group">
+            <label for="inventory">Tồn kho:</label>
+            <input type="number" name="inventory" id="inventory" placeholder="Nhập số lượng tồn kho" value="{{ product.inventory if product }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="id_category">Danh mục:</label>
+            <select name="id_category" id="id_category">
+                {% for cat in categories %}
+                <option value="{{ cat.id_category }}" {% if product and product.id_category == cat.id_category %}selected{% endif %}>{{ cat.category_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="id_brand">Thương hiệu:</label>
+            <select name="id_brand" id="id_brand">
+                {% for brand in brands %}
+                <option value="{{ brand.id_brand }}" {% if product and product.id_brand == brand.id_brand %}selected{% endif %}>{{ brand.brand_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="size">Kích cỡ:</label>
+            <input type="text" name="size" id="size" placeholder="Nhập kích cỡ" value="{{ product.size if product }}">
+        </div>   
+
+        <div class="form-group">
+            <label for="color">Màu:</label>
+            <input type="text" name="color" id="color" placeholder="Nhập màu" value="{{ product.color if product }}">
+        </div>   
+
+        <div class="form-group full-width">
+            <label for="description">Mô tả:</label>
+            <textarea name="description" id="description" placeholder="Nhập mô tả">{{ product.description if product }}</textarea>
+        </div>
+        <div class="form-group full-width">
+            <label for="discount">Giảm giá:</label>
+            <input type="number" name="discount" id="discount" placeholder="Nhập giá giảm" value="{{ product.discount if product }}">
+        </div>
+        
+        <div class="form-buttons">
+            <a href="{{ url_for('product.list_products') }}" class="btn-cancel">
+                <i class="fas fa-times-circle"></i> Hủy
+            </a>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> {% if product %}Cập nhật{% else %}Thêm{% endif %}
+            </button>
+        </div>
+    </form>
+    
+    {% if not product %}
+    <p class="info-msg">Sau khi thêm sản phẩm, bạn có thể thực hiện các thao tác liên quan.</p>
+    {% endif %}
+</div>
+
+<style>
+    .product-form-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+    .form-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .btn-cancel, .btn-submit {
+        padding: 10px 15px;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-cancel {
+        background-color: #dc3545;
+        color: #fff;
+    }
+    .btn-submit {
+        background-color: #28a745;
+        color: #fff;
+    }
+    .info-msg {
+        margin-top: 20px;
+        font-style: italic;
+        color: #555;
+    }
+</style>
+{% endblock %}

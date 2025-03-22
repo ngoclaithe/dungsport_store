@@ -1,0 +1,13 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h2>Dashboard</h2>
+    <div class="stats">
+        <p><strong>Tổng số đơn hàng:</strong> {{ total_orders }}</p>
+        <p><strong>Tổng số sản phẩm:</strong> {{ total_products }}</p>
+        <p><strong>Tổng doanh thu:</strong> {{ total_revenue }} đơn hàng</p>
+        <p><strong>Số lượng người dùng:</strong> {{ total_user }}</p>
+    </div>
+{% endblock %}

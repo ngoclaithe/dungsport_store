@@ -1,0 +1,69 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Quản lý Thương hiệu{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="brand-container">
+    <div class="page-header">
+        <h2><i class="fas fa-industry"></i> Danh sách Thương hiệu</h2>
+        <a href="{{ url_for('brand.add_brand') }}" class="btn-add">
+            <i class="fas fa-plus-circle"></i> Thêm mới
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <i class="fas fa-check-circle"></i> {{ message }}
+                    <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="table-responsive">
+        <table class="brand-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> ID</th>
+                    <th><i class="fas fa-industry"></i> Tên Thương hiệu</th>
+                    <th><i class="fas fa-info-circle"></i> Mô tả</th>
+                    <th><i class="fas fa-calendar-alt"></i> Ngày tạo</th>
+                    <th><i class="fas fa-cogs"></i> Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for brand in brands %}
+                <tr>
+                    <td>{{ brand.id_brand }}</td>
+                    <td>{{ brand.brand_name }}</td>
+                    <td>{{ brand.description }}</td>
+                    <td>{{ brand.created_at.strftime('%d/%m/%Y %H:%M') if brand.created_at else 'N/A' }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('brand.edit_brand', id_brand=brand.id_brand) }}" class="btn-edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="{{ url_for('brand.delete_brand', id_brand=brand.id_brand) }}" method="post" class="delete-form" onsubmit="return confirm('Bạn có chắc chắn muốn xóa thương hiệu này?');" style="display:inline;">
+                            <button type="submit" class="btn-delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="no-data">Không có dữ liệu thương hiệu</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

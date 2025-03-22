@@ -1,0 +1,63 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Quản lý Sản phẩm{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
+{% endblock %}
+{% block content %}
+<div class="product-container">
+    <div class="page-header">
+        <h2>Danh sách Sản phẩm</h2>
+        <a href="{{ url_for('product.add_product') }}" class="btn-add">
+            <i class="fas fa-plus-circle"></i> Thêm sản phẩm
+        </a>
+    </div>
+
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Giảm giá</th>
+                <th>Tồn kho</th>
+                <th>Danh mục</th>
+                <th>Thương hiệu</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.id_product }}</td>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.discount }}</td>
+                <td>{{ product.inventory }}</td>
+                <td>{{ product.category.category_name }}</td>
+                <td>{{ product.brand.brand_name }}</td>
+                <td class="actions">
+                    <a href="{{ url_for('product.add_detail_product_form', id_product=product.id_product) }}" class="btn-detail">
+                        Xem chi tiết
+                    </a>
+                    <form action="{{ url_for('product.edit_product', id_product=product.id_product) }}" method="get" style="display:inline;">
+                        <button type="submit" class="btn-edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </form>
+                    <form action="{{ url_for('product.delete_product', id_product=product.id_product) }}" method="post" style="display:inline;" onsubmit="return confirm('Xác nhận xóa sản phẩm?');">
+                        <button type="submit" class="btn-delete">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" class="no-data">Không có dữ liệu sản phẩm</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

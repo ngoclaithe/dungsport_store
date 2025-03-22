@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Quản lý Shop{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+                <h2>Shop Thể Thao</h2>
+            </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li><a href="{{ url_for('dashboard.dashboard') }}"><i class="fa fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="{{ url_for('category.categories') }}"><i class="fa fa-list"></i> Danh mục</a></li>
+                    <li><a href="{{ url_for('brand.list_brands') }}"><i class="fa fa-list"></i> Thương hiệu</a></li>
+                    <li><a href="{{ url_for('product.list_products') }}"><i class="fa fa-box"></i> Sản phẩm</a></li>                    
+                    <li><a href="{{ url_for('order.orders') }}"><i class="fa fa-shopping-cart"></i> Đơn hàng</a></li>
+                    <li><a href="{{ url_for('user.list_user') }}"><i class="fa fa-users"></i> Người dùng</a></li>
+                    <li><a href="{{ url_for('dashboard.login') }}"><i class="fa fa-users"></i> Đăng xuất</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <div class="main-content">
+            <main>
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Quản lý Người Dùng{% endblock %}
+
+{% block content %}
+    <h2>Danh sách Người Dùng</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Địa chỉ</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id_user }}</td>
+            <td>{{ user.fullname }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ user.address }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Thêm Người Dùng</h3>
+    <form action="{{ url_for('user.add_user') }}" method="post">
+        <input type="text" name="name" placeholder="Tên khách" required>
+        <input type="text" name="email" placeholder="Email" required>
+        <input type="text" name="phone" placeholder="Số điện thoại" required>
+        <input type="text" name="address" placeholder="Địa chỉ" required>
+        <button type="submit">Thêm</button>
+    </form>
+{% endblock %}

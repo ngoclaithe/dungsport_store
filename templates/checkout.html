@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán - Dung Sport</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="DungSport Logo">
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm sản phẩm...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="user-actions">
+                    <div class="action-item contact-btn">
+                        <i class="fas fa-headset"></i>
+                        <span>Tư vấn mua hàng 0823885888</span>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-heart"></i>
+                        <span class="badge">0</span>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Thanh toán</h2>
+            </div>
+            
+            <div class="checkout-container">
+                <!-- Checkout Form -->
+                <div class="checkout-form">
+                    <div class="login-check" id="login-check">
+                        <div class="login-status" id="login-status"></div>
+                    </div>
+                    
+                    <form id="checkout-form">
+                        <div class="form-section">
+                            <h3>Thông tin người nhận</h3>
+                            
+                            <div class="form-group">
+                                <label for="fullname">Họ và tên <span class="required">*</span></label>
+                                <input type="text" id="fullname" name="fullname" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email <span class="required">*</span></label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Số điện thoại <span class="required">*</span></label>
+                                <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}">
+                                <small>Vui lòng nhập số điện thoại 10 số</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h3>Địa chỉ giao hàng</h3>
+                            
+                            <div class="form-group">
+                                <label for="province">Tỉnh/Thành phố <span class="required">*</span></label>
+                                <select id="province" name="province" required>
+                                    <option value="">Chọn Tỉnh/Thành phố</option>
+                                    <option value="Hà Nội">Hà Nội</option>
+                                    <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                                    <option value="Đà Nẵng">Đà Nẵng</option>
+                                    <option value="Hải Phòng">Hải Phòng</option>
+                                    <option value="Cần Thơ">Cần Thơ</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="district">Quận/Huyện <span class="required">*</span></label>
+                                <input type="text" id="district" name="district" required placeholder="Nhập Quận/Huyện">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ward">Phường/Xã <span class="required">*</span></label>
+                                <input type="text" id="ward" name="ward" required placeholder="Nhập Phường/Xã">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="address">Địa chỉ cụ thể <span class="required">*</span></label>
+                                <textarea id="address" name="address" required placeholder="Số nhà, tên đường, khu vực..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h3>Phương thức thanh toán</h3>
+                            
+                            <div class="payment-methods">
+                                <div class="payment-method">
+                                    <input type="radio" id="cod" name="payment_method" value="cod" checked>
+                                    <label for="cod">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <span>Thanh toán khi nhận hàng (COD)</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="payment-method">
+                                    <input type="radio" id="bank-transfer" name="payment_method" value="bank-transfer">
+                                    <label for="bank-transfer">
+                                        <i class="fas fa-university"></i>
+                                        <span>Chuyển khoản ngân hàng</span>
+                                    </label>
+                                </div>
+                                
+                                <div id="bank-details" class="bank-details" style="display: none;">
+                                    <p class="bank-info">Thông tin chuyển khoản:</p>
+                                    <p>Ngân hàng: <strong>Vietcombank</strong></p>
+                                    <p>Số tài khoản: <strong>1234567890</strong></p>
+                                    <p>Chủ tài khoản: <strong>CÔNG TY TNHH DUNG SPORT</strong></p>
+                                    <p>Nội dung: <strong>Thanh toán đơn hàng [Mã đơn hàng]</strong></p>
+                                    <p class="bank-note">Vui lòng chuyển khoản trong vòng 24h sau khi đặt hàng.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h3>Ghi chú đơn hàng</h3>
+                            <div class="form-group">
+                                <textarea id="order-note" name="order-note" placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay địa điểm giao hàng chi tiết..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3>Đơn hàng của bạn</h3>
+                    
+                    <div class="cart-products" id="cart-products">
+                    </div>
+                    
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span>Tạm tính:</span>
+                            <span id="subtotal">0 ₫</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Phí vận chuyển:</span>
+                            <span id="shipping-fee">0 ₫</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Tổng cộng:</span>
+                            <span id="total-price">0 ₫</span>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="place-order-btn" class="place-order-btn">Đặt hàng</button>
+                    <p class="terms-agreement">Bằng cách đặt hàng, bạn đồng ý với <a href="#">Điều khoản dịch vụ</a> của Dung Sport</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Contact Section -->
+    <section class="footer-contact">
+        <div class="contact-item zalo-contact">
+            <i class="fas fa-comment"></i>
+            <span>0823885888</span>
+        </div>
+        <div class="contact-item phone-contact">
+            <i class="fas fa-phone"></i>
+            <span>0823885888</span>
+        </div>
+        <div class="contact-item messenger-contact">
+            <i class="fab fa-facebook-messenger"></i>
+        </div>
+        <div class="messenger-popup">
+            <div>Liên hệ ngay !</div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Về Dung Sport</h3>
+                    <ul>
+                        <li><a href="#">Giới thiệu</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Tuyển dụng</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Hệ thống cửa hàng</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Hỗ trợ khách hàng</h3>
+                    <ul>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Phương thức thanh toán</a></li>
+                        <li><a href="#">Vận chuyển & giao nhận</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Danh mục sản phẩm</h3>
+                    <ul>
+                        <li><a href="#">Đồ bóng đá</a></li>
+                        <li><a href="#">Đồ bóng chuyền</a></li>
+                        <li><a href="#">Đồ bi-a</a></li>
+                        <li><a href="#">Pickleball</a></li>
+                        <li><a href="#">Phụ kiện thể thao</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Liên hệ với chúng tôi</h3>
+                    <div class="footer-contact-info">
+                        <div>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>0823885888</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@dungsport.vn</span>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Dung Sport. Tất cả các quyền được bảo lưu.</p>
+                <div class="payment-methods-horizontal">
+                    <img src="{{ url_for('static', filename='images/visa.jpg') }}" alt="Visa">
+                    <img src="{{ url_for('static', filename='images/mastercard.png') }}" alt="MasterCard">
+                    <img src="{{ url_for('static', filename='images/momo.png') }}" alt="Momo">
+                    <img src="{{ url_for('static', filename='images/zalo.png') }}" alt="ZaloPay">
+                </div>
+            </div>            
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+    <script>
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('active');
+        });
+
+        document.querySelector('.messenger-contact').addEventListener('click', function() {
+            document.querySelector('.messenger-popup').classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

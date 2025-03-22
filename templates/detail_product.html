@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dung Sport - Cửa hàng thể thao chính hãng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/detail_product.css') }}">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="DungSport Logo">
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm sản phẩm...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="user-actions">
+                    <div class="action-item contact-btn">
+                        <i class="fas fa-headset"></i>
+                        <span>Tư vấn mua hàng 0823885888</span>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-heart"></i>
+                        <span class="badge">0</span>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="action-item cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navigation" id="mainNav">
+        <div class="container">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    Danh mục sản phẩm 
+                    <i class="fas fa-chevron-down expand-icon"></i>
+                </li>
+                <li class="nav-item">Sale off Bóng rổ</li>
+                <li class="nav-item">Sale off Pickleball</li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Product Detail Section -->
+    <section class="product-detail-section">
+        <div class="product-detail-container" id="productDetail">
+            <!-- Nội dung chi tiết sản phẩm sẽ được load bằng JavaScript -->
+        </div>
+    </section>
+
+    <!-- Thông báo thêm vào giỏ hàng -->
+    <div class="cart-notification" id="cartNotification">
+        <i class="fas fa-check-circle"></i>
+        <span>Sản phẩm đã được thêm vào giỏ hàng!</span>
+    </div>
+
+    <!-- Footer Contact Section -->
+    <section class="footer-contact">
+        <div class="contact-item zalo-contact">
+            <i class="fas fa-comment"></i>
+            <span>0823885888</span>
+        </div>
+        <div class="contact-item phone-contact">
+            <i class="fas fa-phone"></i>
+            <span>0823885888</span>
+        </div>
+        <div class="contact-item messenger-contact">
+            <i class="fab fa-facebook-messenger"></i>
+        </div>
+        <div class="messenger-popup">
+            <div>Liên hệ ngay !</div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Về Dung Sport</h3>
+                    <ul>
+                        <li><a href="#">Giới thiệu</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Tuyển dụng</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Hệ thống cửa hàng</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Hỗ trợ khách hàng</h3>
+                    <ul>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Phương thức thanh toán</a></li>
+                        <li><a href="#">Vận chuyển & giao nhận</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Danh mục sản phẩm</h3>
+                    <ul>
+                        <li><a href="#">Đồ bóng đá</a></li>
+                        <li><a href="#">Đồ bóng chuyền</a></li>
+                        <li><a href="#">Đồ bi-a</a></li>
+                        <li><a href="#">Pickleball</a></li>
+                        <li><a href="#">Phụ kiện thể thao</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Liên hệ với chúng tôi</h3>
+                    <div class="footer-contact-info">
+                        <div>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>0823885888</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@dungsport.vn</span>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Dung Sport. Tất cả các quyền được bảo lưu.</p>
+                <div class="payment-methods-horizontal">
+                    <img src="{{ url_for('static', filename='images/visa.jpg') }}" alt="Visa">
+                    <img src="{{ url_for('static', filename='images/mastercard.png') }}" alt="MasterCard">
+                    <img src="{{ url_for('static', filename='images/momo.png') }}" alt="Momo">
+                    <img src="{{ url_for('static', filename='images/zalo.png') }}" alt="ZaloPay">
+                </div>
+            </div> 
+        </div>
+    </footer>
+    <script>
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const mainNav = document.getElementById('mainNav');
+            if (mainNav) {
+                mainNav.classList.toggle('active');
+            }
+        });
+
+        document.querySelector('.messenger-contact').addEventListener('click', function() {
+            document.querySelector('.messenger-popup').classList.toggle('show');
+        });
+
+        window.addEventListener('DOMContentLoaded', function() {
+            loadProductDetail();
+        });
+        const currentUrl = window.location.href;
+        const productId = currentUrl.split('/').pop();
+        let cart = JSON.parse(localStorage.getItem('dungsport_cart')) || [];
+        updateCartCount();
+        function updateCartCount() {
+            const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            document.querySelector('.cart-count').textContent = cartCount;
+        }
+        function showCartNotification() {
+            const notification = document.getElementById('cartNotification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        function formatPrice(price) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+        }
+        function calculateDiscountedPrice(price, discountPercent) {
+            return price * (1 - (discountPercent / 100));
+        }
+        async function loadProductDetail() {
+            try {
+                const response = await fetch(`/api/product/${productId}`);
+                if (!response.ok) {
+                    throw new Error('Không thể tải thông tin sản phẩm');
+                }
+                
+                const product = await response.json();
+                displayProductDetail(product);
+            } catch (error) {
+                console.error('Lỗi:', error);
+                document.getElementById('productDetail').innerHTML = `
+                    <div style="text-align: center; padding: 50px;">
+                        <h3>Không thể tải thông tin sản phẩm</h3>
+                        <p>Vui lòng thử lại sau hoặc liên hệ với chúng tôi để được hỗ trợ.</p>
+                    </div>
+                `;
+            }
+        }
+        function displayProductDetail(product) {
+            const discountedPrice = calculateDiscountedPrice(product.price, product.discount);
+            let sizeOptionsHTML = '';
+            if (product.size && product.size.trim() !== "") {
+                const sizes = product.size.split(';');
+                sizeOptionsHTML = `
+                    <div class="product-options">
+                        <div class="option-title">Kích thước:</div>
+                        <div class="sizes-container">
+                            ${sizes.map(size => `<div class="size-option" data-size="${size.trim()}">${size.trim()}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            let colorHTML = '';
+            if (product.color && product.color.trim() !== " ") {
+                colorHTML = `
+                    <div class="product-options">
+                        <div class="option-title">Màu sắc:</div>
+                        <div class="color-option">${product.color}</div>
+                    </div>
+                `;
+            }
+            let descriptionHTML = '';
+            if (product.description && product.description.trim() !== " ") {
+                descriptionHTML = `
+                    <div class="product-description">
+                        <h3 class="description-title">Mô tả sản phẩm</h3>
+                        <div class="description-content">${product.description}</div>
+                    </div>
+                `;
+            } else {
+                descriptionHTML = `
+                    <div class="product-description">
+                        <h3 class="description-title">Mô tả sản phẩm</h3>
+                        <div class="description-content empty-description">Chưa có mô tả cho sản phẩm này.</div>
+                    </div>
+                `;
+            }
+            const productDetailHTML = `
+                <div class="product-images">
+                    <img src="${product.images[0]}" alt="${product.product_name}" class="main-image" id="mainImage">
+                    <div class="image-thumbnails">
+                        ${product.images.map((img, index) => `
+                            <img src="${img}" alt="${product.product_name}" class="thumbnail ${index === 0 ? 'active' : ''}" data-image="${img}">
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h1 class="product-title">${product.product_name}</h1>
+                    <div class="product-brand">Thương hiệu: <strong>${product.brand}</strong></div>
+                    <div class="product-category">Danh mục: <strong>${product.category}</strong></div>
+                    
+                    <div class="product-price">
+                        <span class="current-price">${formatPrice(discountedPrice)}</span>
+                        ${product.discount > 0 ? `
+                            <span class="original-price">${formatPrice(product.price)}</span>
+                            <span class="discount-badge">-${product.discount}%</span>
+                        ` : ''}
+                    </div>
+                    
+                    ${colorHTML}
+                    ${sizeOptionsHTML}
+                    
+                    <div class="quantity-selector">
+                        <div class="quantity-btn minus-btn">-</div>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" id="quantityInput">
+                        <div class="quantity-btn plus-btn">+</div>
+                    </div>
+                    
+                    <button class="add-to-cart-btn" id="addToCartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        Thêm vào giỏ hàng
+                    </button>
+                    
+                    ${descriptionHTML}
+                </div>
+            `;            
+            document.getElementById('productDetail').innerHTML = productDetailHTML;
+            setupEventListeners(product);
+        }
+
+        function setupEventListeners(product) {
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function() {
+                    const mainImage = document.getElementById('mainImage');
+                    mainImage.src = this.getAttribute('data-image');
+                    
+                    thumbnails.forEach(item => item.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            const minusBtn = document.querySelector('.minus-btn');
+            const plusBtn = document.querySelector('.plus-btn');
+            const quantityInput = document.getElementById('quantityInput');
+            
+            minusBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                if (value > 1) {
+                    quantityInput.value = value - 1;
+                }
+            });
+            
+            plusBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                if (value < 99) {
+                    quantityInput.value = value + 1;
+                }
+            });
+            
+            const sizeOptions = document.querySelectorAll('.size-option');
+            sizeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    sizeOptions.forEach(item => item.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            const addToCartBtn = document.getElementById('addToCartBtn');
+            addToCartBtn.addEventListener('click', function() {
+                const quantity = parseInt(quantityInput.value);
+                
+                let selectedSize = null;
+                const selectedSizeElement = document.querySelector('.size-option.selected');
+                if (selectedSizeElement) {
+                    selectedSize = selectedSizeElement.getAttribute('data-size');
+                }
+                
+                if (sizeOptions.length > 0 && !selectedSize) {
+                    alert('Vui lòng chọn kích thước!');
+                    return;
+                }
+                
+                const price = calculateDiscountedPrice(product.price, product.discount);
+                
+                const cartItem = {
+                    id: product.id,
+                    name: product.product_name,
+                    image: product.images[0],
+                    price: price,
+                    originalPrice: product.price,
+                    quantity: quantity,
+                    color: product.color !== " " ? product.color : null,
+                    size: selectedSize,
+                    brand: product.brand
+                };
+                
+                const existingItemIndex = cart.findIndex(item => 
+                    item.id === cartItem.id && item.size === cartItem.size
+                );
+                
+                if (existingItemIndex !== -1) {
+                    cart[existingItemIndex].quantity += quantity;
+                } else {
+                    cart.push(cartItem);
+                }
+                
+                localStorage.setItem('dungsport_cart', JSON.stringify(cart));
+                updateCartCount();
+                showCartNotification();
+            });
+        }
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+</body>
+</html>

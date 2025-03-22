@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Dung Sport</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <a href="/"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="DungSport Logo"></a>
+        </div>
+        <div class="search-bar">
+          <input type="text" placeholder="Tìm sản phẩm...">
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="user-actions">
+          <div class="action-item contact-btn">
+            <i class="fas fa-headset"></i>
+            <span>Tư vấn mua hàng 0823885888</span>
+          </div>
+          <div class="action-item">
+            <i class="fas fa-globe"></i>
+          </div>
+          <div class="action-item">
+            <i class="fas fa-heart"></i>
+            <span class="badge">0</span>
+          </div>
+          <div class="action-item">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="action-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="profile-container">
+    <div class="container">
+      <div class="profile-header">
+        <h2>Thông tin cá nhân</h2>
+        <div class="profile-actions">
+          <button id="edit-mode-btn" class="auth-btn edit-btn">
+            <i class="fas fa-edit"></i> Chỉnh sửa
+          </button>
+          <button id="logout-btn" class="auth-btn logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+          </button>
+        </div>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-avatar">
+          <div class="avatar-circle">
+            <i class="fas fa-user"></i>
+          </div>
+          <h3 id="profile-fullname-display">Tên người dùng</h3>
+          <span id="profile-role-display">Khách hàng</span>
+        </div>
+
+        <div class="profile-details">
+          <form id="profile-form">
+            <div class="form-group">
+              <label for="input-fullname">Họ và tên:</label>
+              <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="input-fullname" placeholder="Nhập họ và tên" disabled>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="input-email">Email:</label>
+              <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="input-email" placeholder="Nhập email" disabled>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="input-phone">Số điện thoại:</label>
+              <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="text" id="input-phone" placeholder="Nhập số điện thoại" disabled>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="input-address">Địa chỉ:</label>
+                <div class="input-group">
+                  <i class="fas fa-home"></i>
+                  <input type="text" id="input-address" placeholder="Nhập địa chỉ" disabled>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="input-ward">Phường/Xã:</label>
+                <div class="input-group">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <input type="text" id="input-ward" placeholder="Nhập phường/xã" disabled>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="input-district">Quận/Huyện:</label>
+                <div class="input-group">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <input type="text" id="input-district" placeholder="Nhập quận/huyện" disabled>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="input-province">Tỉnh/Thành phố:</label>
+              <div class="input-group">
+                <i class="fas fa-city"></i>
+                <input type="text" id="input-province" placeholder="Nhập tỉnh/thành phố" disabled>
+              </div>
+            </div>
+            
+            <div class="form-group hidden">
+              <label for="input-role">Vai trò:</label>
+              <div class="input-group">
+                <i class="fas fa-user-tag"></i>
+                <input type="text" id="input-role" placeholder="Vai trò" disabled>
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" id="update-btn" class="auth-btn update-btn hidden">
+                <i class="fas fa-save"></i> Lưu thay đổi
+              </button>
+              <button type="button" id="cancel-btn" class="auth-btn cancel-btn hidden">
+                <i class="fas fa-times"></i> Hủy
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Dung Sport. Tất cả các quyền được bảo lưu.</p>
+    </div>
+  </footer>
+
+  <script>
+    function decodeJwt(token) {
+      try {
+        const payload = token.split('.')[1];
+        const decoded = atob(payload);
+        return JSON.parse(decoded);
+      } catch (e) {
+        console.error('Token không hợp lệ', e);
+        return null;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = '/login';
+        return;
+      }
+      
+      const payload = decodeJwt(token);
+      if (!payload || !payload.user_id) {
+        window.location.href = '/login';
+        return;
+      }
+      
+      const userId = payload.user_id;
+      let userData = null;
+      
+      // Load user data
+      fetch(`/api/info/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+          userData = data;
+          
+          // Update display values
+          document.getElementById('profile-fullname-display').textContent = data.fullname || 'Người dùng';
+          document.getElementById('profile-role-display').textContent = data.role || 'Khách hàng';
+          
+          // Update form input values
+          document.getElementById('input-fullname').value = data.fullname || '';
+          document.getElementById('input-email').value = data.email || '';
+          document.getElementById('input-phone').value = data.phone || '';
+          document.getElementById('input-address').value = data.address || '';
+          document.getElementById('input-ward').value = data.ward || '';
+          document.getElementById('input-district').value = data.district || '';
+          document.getElementById('input-province').value = data.province || '';
+          document.getElementById('input-role').value = data.role || '';
+        })
+        .catch(error => {
+          console.error('Lỗi khi tải thông tin profile:', error);
+        });
+
+      // Edit mode toggle
+      const editModeBtn = document.getElementById('edit-mode-btn');
+      const updateBtn = document.getElementById('update-btn');
+      const cancelBtn = document.getElementById('cancel-btn');
+      const inputs = document.querySelectorAll('#profile-form input');
+      
+      editModeBtn.addEventListener('click', function() {
+        // Enable inputs
+        inputs.forEach(input => {
+          if (input.id !== 'input-role') { // Keep role field disabled
+            input.disabled = false;
+          }
+        });
+        
+        // Show action buttons
+        updateBtn.classList.remove('hidden');
+        cancelBtn.classList.remove('hidden');
+        editModeBtn.classList.add('hidden');
+      });
+      
+      // Cancel button
+      cancelBtn.addEventListener('click', function() {
+        // Disable inputs and reset values
+        inputs.forEach(input => {
+          input.disabled = true;
+        });
+        
+        // Reset form with original data
+        if (userData) {
+          document.getElementById('input-fullname').value = userData.fullname || '';
+          document.getElementById('input-email').value = userData.email || '';
+          document.getElementById('input-phone').value = userData.phone || '';
+          document.getElementById('input-address').value = userData.address || '';
+          document.getElementById('input-ward').value = userData.ward || '';
+          document.getElementById('input-district').value = userData.district || '';
+          document.getElementById('input-province').value = userData.province || '';
+        }
+        
+        // Hide action buttons
+        updateBtn.classList.add('hidden');
+        cancelBtn.classList.add('hidden');
+        editModeBtn.classList.remove('hidden');
+      });
+
+      // Update profile info
+      updateBtn.addEventListener('click', function() {
+        const updatedData = {
+          fullname: document.getElementById('input-fullname').value,
+          email: document.getElementById('input-email').value,
+          phone: document.getElementById('input-phone').value,
+          address: document.getElementById('input-address').value,
+          ward: document.getElementById('input-ward').value,
+          district: document.getElementById('input-district').value,
+          province: document.getElementById('input-province').value,
+          role: document.getElementById('input-role').value
+        };
+        
+        updateProfileInfo(updatedData);
+        
+        // Disable inputs after update
+        inputs.forEach(input => {
+          input.disabled = true;
+        });
+        
+        // Hide action buttons
+        updateBtn.classList.add('hidden');
+        cancelBtn.classList.add('hidden');
+        editModeBtn.classList.remove('hidden');
+      });
+
+      // Logout
+      document.getElementById('logout-btn').addEventListener('click', function() {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+      });
+    });
+
+    function updateProfileInfo(updatedData) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = '/login';
+        return;
+      }
+      
+      const payload = decodeJwt(token);
+      if (!payload || !payload.user_id) {
+        window.location.href = '/login';
+        return;
+      }
+      
+      const userId = payload.user_id;
+      
+      fetch(`/api/info/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Lỗi khi cập nhật thông tin');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Update display name after successful update
+        document.getElementById('profile-fullname-display').textContent = data.fullname || 'Người dùng';
+        
+        // Show success notification
+        showNotification('Cập nhật thông tin thành công!', 'success');
+      })
+      .catch(error => {
+        console.error('Lỗi khi cập nhật thông tin profile:', error);
+        showNotification('Lỗi khi cập nhật thông tin. Vui lòng thử lại!', 'error');
+      });
+    }
+    
+    function showNotification(message, type) {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        <span>${message}</span>
+      `;
+      
+      // Add to body
+      document.body.appendChild(notification);
+      
+      // Show notification
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
+      
+      // Remove after timeout
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 500);
+      }, 3000);
+    }
+  </script>
+  <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+</body>
+</html>

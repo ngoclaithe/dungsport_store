@@ -1,0 +1,33 @@
+.store-location-section {
+    padding: 40px 0;
+    background-color: #f9f9f9;
+}
+
+.store-location-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.address-selector {
+    margin-bottom: 20px;
+}
+
+.address-selector label {
+    font-size: 1.1em;
+    margin-right: 10px;
+}
+
+.address-selector select {
+    padding: 8px 12px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+#map {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

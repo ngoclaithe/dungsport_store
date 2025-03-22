@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dung Sport - Cửa hàng thể thao chính hãng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/list_category.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="DungSport Logo">
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm sản phẩm...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="user-actions">
+                    <div class="action-item contact-btn">
+                        <i class="fas fa-headset"></i>
+                        <span>Tư vấn mua hàng 0823885888</span>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-heart"></i>
+                        <span class="badge">0</span>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="action-item">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- List Products Section By Category -->
+    <section class="list-products-section-by-category">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Sản phẩm</h2>
+            </div>
+            <div class="list-products-section-by-category-grid">
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Brand Logo Grid Section -->
+    <section class="brand-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Thương hiệu nổi bật</h2>
+            </div>
+            <div class="brand-grid">
+                <div class="brand-card">
+                    <img class="brand-image" src="/api/placeholder/150/60" alt="Brand 1">
+                </div>
+                <div class="brand-card">
+                    <img class="brand-image" src="/api/placeholder/150/60" alt="Brand 2">
+                </div>
+                <div class="brand-card">
+                    <img class="brand-image" src="/api/placeholder/150/60" alt="Brand 3">
+                </div>
+                <div class="brand-card">
+                    <img class="brand-image" src="/api/placeholder/150/60" alt="Brand 4">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Contact Section -->
+    <section class="footer-contact">
+        <div class="contact-item zalo-contact">
+            <i class="fas fa-comment"></i>
+            <span>0823885888</span>
+        </div>
+        <div class="contact-item phone-contact">
+            <i class="fas fa-phone"></i>
+            <span>0823885888</span>
+        </div>
+        <div class="contact-item messenger-contact">
+            <i class="fab fa-facebook-messenger"></i>
+        </div>
+        <div class="messenger-popup">
+            <div>Liên hệ ngay !</div>
+        </div>
+    </section>
+
+    <!-- Footer Section (New Added Section) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Về Dung Sport</h3>
+                    <ul>
+                        <li><a href="#">Giới thiệu</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Tuyển dụng</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Hệ thống cửa hàng</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Hỗ trợ khách hàng</h3>
+                    <ul>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Phương thức thanh toán</a></li>
+                        <li><a href="#">Vận chuyển & giao nhận</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Danh mục sản phẩm</h3>
+                    <ul>
+                        <li><a href="#">Đồ bóng đá</a></li>
+                        <li><a href="#">Đồ bóng chuyền</a></li>
+                        <li><a href="#">Đồ bi-a</a></li>
+                        <li><a href="#">Pickleball</a></li>
+                        <li><a href="#">Phụ kiện thể thao</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Liên hệ với chúng tôi</h3>
+                    <div class="footer-contact-info">
+                        <div>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>0823885888</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@dungsport.vn</span>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Dung Sport. Tất cả các quyền được bảo lưu.</p>
+                <div class="payment-methods-horizontal">
+                    <img src="{{ url_for('static', filename='images/visa.jpg') }}" alt="Visa">
+                    <img src="{{ url_for('static', filename='images/mastercard.png') }}" alt="MasterCard">
+                    <img src="{{ url_for('static', filename='images/momo.png') }}" alt="Momo">
+                    <img src="{{ url_for('static', filename='images/zalo.png') }}" alt="ZaloPay">
+                </div>
+            </div> 
+        </div>
+    </footer>
+
+    <script>
+        
+        const images = [
+        "{{ url_for('static', filename='images/slider_1.png') }}",
+        "{{ url_for('static', filename='images/slider_2.png') }}",
+        "{{ url_for('static', filename='images/slider_3.png') }}"
+        ];
+        let current = 0;
+        setInterval(() => {
+        current = (current + 1) % images.length;
+        const slider = document.getElementById('slider');
+        slider.style.opacity = '0';
+        setTimeout(() => {
+            slider.src = images[current];
+            slider.style.opacity = '1';
+        }, 500);
+        }, 5000);
+
+        document.addEventListener("DOMContentLoaded", function(){
+        const brandCards = document.querySelectorAll('.brand-card');
+
+        const brands = [
+            "{{ url_for('static', filename='images/logo1.png') }}",
+            "{{ url_for('static', filename='images/logo2.png') }}",
+            "{{ url_for('static', filename='images/logo3.png') }}",
+            "{{ url_for('static', filename='images/logo4.jpg') }}",
+            "{{ url_for('static', filename='images/logo5.png') }}",
+            "{{ url_for('static', filename='images/logo6.png') }}",
+            "{{ url_for('static', filename='images/logo7.png') }}",
+            "{{ url_for('static', filename='images/logo8.png') }}"
+        ];
+
+        let current = 0;
+        const totalCards = brandCards.length;
+
+        function updateBrands() {
+            brandCards.forEach((card, index) => {
+                const img = card.querySelector('.brand-image');
+                img.src = brands[(current + index) % brands.length];
+            });
+        }
+
+        updateBrands();
+
+        setInterval(() => {
+            current = (current + totalCards) % brands.length;
+            updateBrands();
+        }, 3000);
+        });
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lấy id_category từ query string, nếu không có thì mặc định là 1
+            const params = new URLSearchParams(window.location.search);
+            const id_category = params.get('id_category') || 1;
+            
+            const productsGrid = document.querySelector('.list-products-section-by-category-grid');
+            
+            fetch(`/api/product_by_category/${id_category}`)
+                .then(response => response.json())
+                .then(products => {
+                    productsGrid.innerHTML = '';
+                    if (!products || products.length === 0) {
+                        productsGrid.innerHTML = '<p>Không có sản phẩm nào trong danh mục này.</p>';
+                        return;
+                    }
+                    products.forEach(product => {
+                        const productCard = document.createElement('div');
+                        productCard.classList.add('product-card');
+                        productCard.setAttribute('data-product-id', product.id);
+                        
+                        productCard.innerHTML = `
+                            <div class="product-image-container">
+                                <img class="product-image" src="${product.images[0]}" alt="${product.product_name}">
+                            </div>
+                            <div class="product-details">
+                                <h3 class="product-name">${product.product_name}</h3>
+                                <p class="product-price">${product.price} đ</p>
+                            </div>
+                        `;
+                        
+                        productCard.addEventListener('click', function () {
+                            const productId = this.getAttribute('data-product-id');
+                            window.location.href = `/detail-product/${productId}`;
+                        });
+                        
+                        productsGrid.appendChild(productCard);
+                    });
+                })
+                .catch(error => console.error('Lỗi khi tải sản phẩm theo danh mục:', error));
+        });
+    </script>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+</body>
+</html>

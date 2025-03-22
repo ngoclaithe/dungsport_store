@@ -1,0 +1,209 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Chi tiết sản phẩm - {{ product.product_name }}{% endblock %}
+
+{% block content %}
+<div class="product-detail-container">
+    <h2>Chi tiết sản phẩm: {{ product.product_name }}</h2>
+    
+    <div class="product-info">
+        <p><strong>ID:</strong> {{ product.id_product }}</p>
+        <p><strong>Tên sản phẩm:</strong> {{ product.product_name }}</p>
+        <p><strong>Giá:</strong> {{ product.price }}</p>
+        <p><strong>Tồn kho:</strong> {{ product.inventory }}</p>
+        <p><strong>Danh mục:</strong> {{ product.category.category_name }}</p>
+        <p><strong>Thương hiệu:</strong> {{ product.brand.brand_name }}</p>
+        <p><strong>Mô tả:</strong> {{ product.description }}</p>
+    </div>
+    
+    <div class="images-section">
+        <h3>Ảnh sản phẩm</h3>
+        <div id="imagesContainer" class="images-container">
+        </div>
+        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+    </div>
+    
+    <div class="product-detail-actions">
+        <a href="{{ url_for('product.list_products') }}" class="btn-back">Quay lại danh sách</a>
+    </div>
+</div>
+
+<script>
+function loadImages() {
+    fetch("{{ url_for('product_image.list_product_images', id_product=product.id_product) }}")
+    .then(response => response.json())
+    .then(data => {
+        const imagesContainer = document.getElementById("imagesContainer");
+        imagesContainer.innerHTML = ""; 
+        if(data.images && data.images.length > 0){
+            data.images.forEach(image => {
+                const div = document.createElement("div");
+                div.className = "image-item";
+                div.setAttribute("data-id", image.id_image);
+                div.innerHTML = `
+                    <img src="${image.image_url}" alt="Ảnh sản phẩm">
+                    <button class="btn-delete-image" onclick="deleteImage(${image.id_image})">&times;</button>
+                `;
+                imagesContainer.appendChild(div);
+            });
+        }
+        if(!data.images || data.images.length < 4){
+            const addDiv = document.createElement("div");
+            addDiv.className = "image-item add-image";
+            addDiv.innerHTML = `<span>+</span>`;
+            addDiv.onclick = function() {
+                document.getElementById('imageInput').click();
+            };
+            imagesContainer.appendChild(addDiv);
+        }
+    })
+    .catch(error => console.error("Lỗi load ảnh:", error));
+}
+
+// Thay đổi hàm uploadImage để sử dụng API upload riêng biệt
+function uploadImage() {
+    const input = document.getElementById('imageInput');
+    const file = input.files[0];
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append("product_image", file);
+    
+    // Sử dụng API upload trước để lấy URL ảnh
+    fetch("{{ url_for('upload.upload_image') }}", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            // Sau khi upload thành công, thêm URL ảnh vào sản phẩm
+            const imageFormData = new FormData();
+            imageFormData.append("image_url", data.image_url);
+            
+            return fetch("{{ url_for('product_image.add_product_image', id_product=product.id_product) }}", {
+                method: "POST",
+                body: imageFormData
+            });
+        } else {
+            throw new Error(data.message || "Lỗi upload ảnh");
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            loadImages();
+            document.getElementById('imageInput').value = ''; 
+        } else {
+            alert("Lỗi: " + data.message);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Đã xảy ra lỗi khi upload ảnh: " + (err.message || "Lỗi không xác định"));
+    });
+}
+
+function deleteImage(id_image) {
+    if (!confirm("Bạn có chắc chắn muốn xóa ảnh này?")) return;
+    
+    const url = "{{ url_for('product_image.delete_product_image', id_image=0) }}".replace("0", id_image);
+    
+    fetch(url, {
+        method: "DELETE"
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            loadImages(); 
+        } else {
+            alert("Lỗi: " + data.message);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    loadImages();
+    
+    document.getElementById('imageInput').addEventListener('change', uploadImage);
+});
+</script>
+
+<style>
+.product-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.product-info p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+.images-section {
+    margin-top: 20px;
+}
+.images-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.image-item {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #f9f9f9;
+}
+.image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.btn-delete-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255,0,0,0.7);
+    border: none;
+    color: #fff;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+.add-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #e9e9e9;
+}
+.add-image span {
+    font-size: 48px;
+    color: #777;
+}
+.product-detail-actions {
+    margin-top: 30px;
+}
+.btn-back {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+.btn-back:hover {
+    background-color: #5a6268;
+}
+</style>
+{% endblock %}

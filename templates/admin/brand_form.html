@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if brand %}Chỉnh sửa Thương hiệu{% else %}Thêm Thương hiệu mới{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/brand_form.css') }}">
+{% endblock %}
+{% block content %}
+<div class="brand-form-container">
+    <div class="page-header">
+        <h2>
+            <i class="fas {% if brand %}fa-edit{% else %}fa-plus-circle{% endif %}"></i> 
+            {% if brand %}Chỉnh sửa Thương hiệu{% else %}Thêm Thương hiệu mới{% endif %}
+        </h2>
+        <a href="{{ url_for('brand.list_brands') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i> {{ message }}
+                    <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="form-wrapper">
+        <form method="POST" class="brand-form">
+            <div class="form-group">
+                <label for="brand_name">
+                    <i class="fas fa-tag"></i> Tên Thương hiệu <span class="required">*</span>
+                </label>
+                <input type="text" id="brand_name" name="brand_name" value="{{ brand.brand_name if brand else '' }}" required class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="description">
+                    <i class="fas fa-info-circle"></i> Mô tả
+                </label>
+                <textarea id="description" name="description" class="form-control" rows="4">{{ brand.description if brand else '' }}</textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-save"></i> {% if brand %}Cập nhật{% else %}Lưu{% endif %}
+                </button>
+                <a href="{{ url_for('brand.list_brands') }}" class="btn-cancel">
+                    <i class="fas fa-times"></i> Hủy
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

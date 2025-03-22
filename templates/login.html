@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập & Đăng ký - Dung Sport</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <a href="/"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="DungSport Logo"></a>
+        </div>
+        <div class="search-bar">
+          <input type="text" placeholder="Tìm sản phẩm...">
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="user-actions">
+          <div class="action-item contact-btn">
+            <i class="fas fa-headset"></i>
+            <span>Tư vấn mua hàng 0823885888</span>
+          </div>
+          <div class="action-item">
+            <i class="fas fa-globe"></i>
+          </div>
+          <div class="action-item">
+            <i class="fas fa-heart"></i>
+            <span class="badge">0</span>
+          </div>
+          <div class="action-item">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="action-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-container">
+    <div class="container">
+      <div class="auth-tabs">
+        <button class="tab-link active" data-tab="login">Đăng nhập</button>
+        <button class="tab-link" data-tab="register">Đăng ký</button>
+      </div>
+      <div class="tab-content active" id="login">
+        <h2>Đăng nhập</h2>
+        <form id="login-form" class="auth-form">
+          <div class="form-group">
+            <label for="login-email">Email:</label>
+            <input type="email" id="login-email" name="email" required placeholder="Nhập email của bạn">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Mật khẩu:</label>
+            <input type="password" id="login-password" name="password" required placeholder="Nhập mật khẩu">
+          </div>
+          <button type="submit" class="auth-btn">Đăng nhập</button>
+        </form>
+      </div>
+      <div class="tab-content" id="register">
+        <h2>Đăng ký</h2>
+        <form id="register-form" class="auth-form">
+          <div class="form-group">
+            <label for="register-fullname">Họ và tên:</label>
+            <input type="text" id="register-fullname" name="fullname" required placeholder="Nhập họ và tên">
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email:</label>
+            <input type="email" id="register-email" name="email" required placeholder="Nhập email">
+          </div>
+          <div class="form-group">
+            <label for="register-phone">Số điện thoại:</label>
+            <input type="tel" id="register-phone" name="phone" required placeholder="Nhập số điện thoại">
+          </div>
+          <div class="form-group">
+            <label for="register-password">Mật khẩu:</label>
+            <input type="password" id="register-password" name="password" required placeholder="Nhập mật khẩu">
+          </div>
+          <div class="form-group">
+            <label for="register-confirm-password">Xác nhận mật khẩu:</label>
+            <input type="password" id="register-confirm-password" name="confirm_password" required placeholder="Nhập lại mật khẩu">
+          </div>
+          <div class="form-group">
+            <label for="register-province">Tỉnh/Thành phố:</label>
+            <input type="text" id="register-province" name="province" required placeholder="Nhập tỉnh/thành phố">
+          </div>
+          <div class="form-group">
+            <label for="register-district">Quận/Huyện:</label>
+            <input type="text" id="register-district" name="district" required placeholder="Nhập quận/huyện">
+          </div>
+          <div class="form-group">
+            <label for="register-ward">Phường/Xã:</label>
+            <input type="text" id="register-ward" name="ward" required placeholder="Nhập phường/xã">
+          </div>
+          <div class="form-group">
+            <label for="register-address">Địa chỉ chính xác:</label>
+            <textarea id="register-address" name="address" required placeholder="Nhập địa chỉ cụ thể (số nhà, tên đường,...)"></textarea>
+          </div>
+          <button type="submit" class="auth-btn">Đăng ký</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Dung Sport. Tất cả các quyền được bảo lưu.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabLinks = document.querySelectorAll('.tab-link');
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          tabLinks.forEach(item => item.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+          this.classList.add('active');
+          document.getElementById(this.dataset.tab).classList.add('active');
+        });
+      });
+
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(loginForm);
+        fetch('/api/login', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.success) {
+            localStorage.setItem('token', data.token);
+            console.log("Đã lưu token", data.token);
+            window.location.href = '/';
+          } else {
+            alert(data.message || 'Đăng nhập thất bại');
+          }
+        })
+        .catch(error => console.error('Error during login:', error));
+      });
+
+      registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(registerForm);
+        fetch('/api/register', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.success) {
+            window.location.href = '/';
+          } else {
+            alert(data.message || 'Đăng ký thất bại');
+          }
+        })
+        .catch(error => console.error('Error during register:', error));
+      });
+    });
+  </script>
+  <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+</body>
+</html>

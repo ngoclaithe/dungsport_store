@@ -1,0 +1,48 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Quản lý Đơn hàng{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='admin/css/order.css') }}">
+{% endblock %}
+{% block content %}
+    <h2>Danh sách Đơn hàng</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ngày tạo</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+                <th>Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('order.order_detail', order_id=order.order_id) }}">
+                        {{ order.order_id }}
+                    </a>
+                </td>
+                <td>{{ order.order_date }}</td>
+                <td>{{ order.status }}</td>
+                <td>
+                    <form action="{{ url_for('order.update_order', order_id=order.order_id) }}" method="post">
+                        <select name="status">
+                            <option value="pending" {% if order.status == "pending" %}selected{% endif %}>Chờ xử lý</option>
+                            <option value="approved" {% if order.status == "approved" %}selected{% endif %}>Hoàn thành</option>
+                            <option value="refused" {% if order.status == "refused" %}selected{% endif %}>Hủy</option>
+                        </select>
+                        <button type="submit">Cập nhật</button>
+                    </form>
+                </td>
+                <td>
+                    <a href="{{ url_for('order.order_detail', order_id=order.order_id) }}" class="btn-detail">
+                        Xem chi tiết
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
