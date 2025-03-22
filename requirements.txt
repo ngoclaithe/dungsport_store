@@ -3,3 +3,5 @@ Flask-SQLAlchemy
 waitress
 PyJWT
 WeasyPrint
+fuzzywuzzy
+python-Levenshtein
