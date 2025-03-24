@@ -6,6 +6,6 @@ class InventoryLog(db.Model):
     id_log = Column(Integer, primary_key=True, autoincrement=True)
     id_product = Column(Integer, ForeignKey('products.id_product'))
     change_quantity = Column(Integer)
-    change_type = Column(Enum('import', 'export', 'adjustment'))
+    change_type = Column(Enum('import', 'export'))
     log_date = Column(TIMESTAMP)
     note = Column(Text)

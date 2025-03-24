@@ -210,12 +210,11 @@
 {% block extra_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <script>
-    // Dữ liệu doanh thu theo tháng
     const monthlySalesData = {
-        labels: {{ monthly_sales.labels|tojson }},
+        labels: {{ monthly_sales.labels|tojson|safe }},
         datasets: [{
             label: 'Doanh thu',
-            data: {{ monthly_sales.data|tojson }},
+            data: {{ monthly_sales.data|tojson|safe }},
             backgroundColor: 'rgba(52, 152, 219, 0.2)',
             borderColor: 'rgba(52, 152, 219, 1)',
             borderWidth: 2,
@@ -224,7 +223,6 @@
         }]
     };
 
-    // Cấu hình biểu đồ doanh thu theo tháng
     const monthlySalesConfig = {
         type: 'line',
         data: monthlySalesData,
@@ -252,11 +250,10 @@
         }
     };
 
-    // Dữ liệu doanh số theo danh mục
     const categorySalesData = {
-        labels: {{ category_sales.categories|tojson }},
+        labels: {{ category_sales.categories|tojson|safe }},
         datasets: [{
-            data: {{ category_sales.sales|tojson }},
+            data: {{ category_sales.sales|tojson|safe }},
             backgroundColor: [
                 'rgba(52, 152, 219, 0.7)',
                 'rgba(46, 204, 113, 0.7)',
@@ -275,7 +272,6 @@
         }]
     };
 
-    // Cấu hình biểu đồ doanh số theo danh mục
     const categorySalesConfig = {
         type: 'doughnut',
         data: categorySalesData,
@@ -290,17 +286,10 @@
         }
     };
 
-    // Khởi tạo biểu đồ
     window.addEventListener('load', function() {
-        const monthlySalesChart = new Chart(
-            document.getElementById('monthlySalesChart'),
-            monthlySalesConfig
-        );
-        
-        const categorySalesChart = new Chart(
-            document.getElementById('categorySalesChart'),
-            categorySalesConfig
-        );
+        new Chart(document.getElementById('monthlySalesChart'), monthlySalesConfig);
+        new Chart(document.getElementById('categorySalesChart'), categorySalesConfig);
     });
 </script>
+
 {% endblock %}

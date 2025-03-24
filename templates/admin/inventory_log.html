@@ -1,0 +1,79 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Quản lý Kiểm kê{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="inventory-container">
+    <div class="page-header">
+        <h2><i class="fas fa-clipboard-list"></i> Danh sách Kiểm kê</h2>
+        <a href="{{ url_for('inventory.add_inventory') }}" class="btn-add">
+            <i class="fas fa-plus-circle"></i> Thêm mới
+        </a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <i class="fas fa-check-circle"></i> {{ message }}
+                    <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="table-responsive">
+        <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> ID</th>
+                    <th><i class="fas fa-box"></i> Mã Sản phẩm</th>
+                    <th><i class="fas fa-sort-amount-up-alt"></i> Số lượng thay đổi</th>
+                    <th><i class="fas fa-exchange-alt"></i> Loại thay đổi</th>
+                    <th><i class="fas fa-calendar-alt"></i> Ngày ghi nhận</th>
+                    <th><i class="fas fa-sticky-note"></i> Ghi chú</th>
+                    <th><i class="fas fa-cogs"></i> Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in inventory_logs %}
+                <tr>
+                    <td>{{ log.id_log }}</td>
+                    <td>{{ log.id_product }}</td>
+                    <td>{{ log.change_quantity }}</td>
+                    <td>
+                        {% if log.change_type == 'import' %}
+                            <span class="badge badge-success">Nhập kho</span>
+                        {% else %}
+                            <span class="badge badge-warning">Xuất kho</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ log.log_date.strftime('%d/%m/%Y %H:%M') if log.log_date else 'N/A' }}</td>
+                    <td>{{ log.note }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('inventory.edit_inventory', id_log=log.id_log) }}" class="btn-edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="{{ url_for('inventory.delete_inventory', id_log=log.id_log) }}" method="post" class="delete-form" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bản ghi kiểm kê này?');" style="display:inline;">
+                            <button type="submit" class="btn-delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="no-data">Không có dữ liệu kiểm kê</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

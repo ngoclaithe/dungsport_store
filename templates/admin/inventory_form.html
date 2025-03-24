@@ -1,0 +1,69 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+    {% if log %}Chỉnh sửa bản ghi kiểm kê{% else %}Thêm bản ghi kiểm kê mới{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/brand_form.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="inventory-form-container">
+    <div class="page-header">
+        <h2>
+            {% if log %}
+                <i class="fas fa-edit"></i> Chỉnh sửa bản ghi kiểm kê
+            {% else %}
+                <i class="fas fa-plus-circle"></i> Thêm bản ghi kiểm kê mới
+            {% endif %}
+        </h2>
+        <a href="{{ url_for('inventory.list_inventory') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
+
+    <div class="form-wrapper">
+        <form method="post" action="{% if log %}{{ url_for('inventory.update_inventory', id_log=log.id_log) }}{% else %}{{ url_for('inventory.add_inventory') }}{% endif %}" class="inventory-form">
+            <div class="form-group">
+                <label for="id_product"><i class="fas fa-box"></i> Sản phẩm:</label>
+                <select id="id_product" name="id_product" class="form-control" required>
+                    <option value="">-- Chọn sản phẩm --</option>
+                    {% for product in products %}
+                    <option value="{{ product.id_product }}" {% if log and log.id_product == product.id_product %}selected{% endif %}>
+                        {{ product.product_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="change_quantity"><i class="fas fa-sort-amount-up-alt"></i> Số lượng thay đổi:</label>
+                <input type="number" id="change_quantity" name="change_quantity" class="form-control" value="{{ log.change_quantity if log else '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="change_type"><i class="fas fa-exchange-alt"></i> Loại thay đổi:</label>
+                <select id="change_type" name="change_type" class="form-control" required>
+                    <option value="import" {% if log and log.change_type == 'import' %}selected{% endif %}>Nhập kho</option>
+                    <option value="export" {% if log and log.change_type == 'export' %}selected{% endif %}>Xuất kho</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="note"><i class="fas fa-sticky-note"></i> Ghi chú:</label>
+                <textarea id="note" name="note" class="form-control" rows="4">{{ log.note if log else '' }}</textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-save"></i> {% if log %}Cập nhật{% else %}Lưu{% endif %}
+                </button>
+                <a href="{{ url_for('inventory.list_inventory') }}" class="btn-cancel">
+                    <i class="fas fa-times"></i> Hủy
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
