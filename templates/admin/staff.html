@@ -1,0 +1,93 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Quản lý Nhân Viên{% endblock %}
+
+{% block content %}
+    <h2>Danh sách Nhân Viên</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Vị trí</th>
+            <th>Lương</th>
+            <th>Ngày thuê</th>
+        </tr>
+        {% for staff in staffs %}
+        <tr>
+            <td>{{ staff.id_staff }}</td>
+            <td>{{ staff.fullname }}</td>
+            <td>{{ staff.email }}</td>
+            <td>{{ staff.phone }}</td>
+            <td>{{ staff.position }}</td>
+            <td>{{ staff.salary }}</td>
+            <td>{{ staff.hire_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Thêm Thông Tin Nhân Viên</h3>
+    <form action="{{ url_for('staff.add_staff') }}" method="post">
+        <div class="form-group">
+            <label for="user_select">Chọn người dùng:</label>
+            <select id="user_select" name="user_id" onchange="fillUserData(this.value)" required>
+                <option value="">-- Chọn người dùng nhân viên --</option>
+                {% for user in users %}
+                <option value="{{ user.id_user }}" 
+                        data-fullname="{{ user.fullname }}" 
+                        data-email="{{ user.email }}" 
+                        data-phone="{{ user.phone }}">
+                    {{ user.fullname }} ({{ user.email }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="fullname">Tên đầy đủ:</label>
+            <input type="text" id="fullname" name="fullname" placeholder="Tên đầy đủ" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Số điện thoại:</label>
+            <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required>
+        </div>
+        <div class="form-group">
+            <label for="position">Vị trí công việc:</label>
+            <input type="text" id="position" name="position" placeholder="Vị trí công việc" required>
+        </div>
+        <div class="form-group">
+            <label for="salary">Lương:</label>
+            <input type="number" id="salary" name="salary" placeholder="Lương" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="hire_date">Ngày thuê:</label>
+            <input type="date" id="hire_date" name="hire_date" required>
+        </div>
+        <div class="form-button">
+            <button type="submit" class="btn-submit">Thêm thông tin nhân viên</button>
+        </div>
+    </form>
+
+    <div class="navigation-links">
+        <a href="{{ url_for('user.list_user') }}">Quản lý Người dùng</a>
+    </div>
+
+    <script>
+        function fillUserData(userId) {
+            if (userId) {
+                var selectedOption = document.querySelector(`option[value="${userId}"]`);
+                document.getElementById('fullname').value = selectedOption.getAttribute('data-fullname');
+                document.getElementById('email').value = selectedOption.getAttribute('data-email');
+                document.getElementById('phone').value = selectedOption.getAttribute('data-phone');
+            } else {
+                document.getElementById('fullname').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('phone').value = '';
+            }
+        }
+    </script>
+{% endblock %}

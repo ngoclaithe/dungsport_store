@@ -187,17 +187,14 @@
       const userId = payload.user_id;
       let userData = null;
       
-      // Load user data
       fetch(`/api/info/${userId}`)
         .then(response => response.json())
         .then(data => {
           userData = data;
           
-          // Update display values
           document.getElementById('profile-fullname-display').textContent = data.fullname || 'Người dùng';
           document.getElementById('profile-role-display').textContent = data.role || 'Khách hàng';
           
-          // Update form input values
           document.getElementById('input-fullname').value = data.fullname || '';
           document.getElementById('input-email').value = data.email || '';
           document.getElementById('input-phone').value = data.phone || '';
@@ -211,34 +208,29 @@
           console.error('Lỗi khi tải thông tin profile:', error);
         });
 
-      // Edit mode toggle
       const editModeBtn = document.getElementById('edit-mode-btn');
       const updateBtn = document.getElementById('update-btn');
       const cancelBtn = document.getElementById('cancel-btn');
       const inputs = document.querySelectorAll('#profile-form input');
       
       editModeBtn.addEventListener('click', function() {
-        // Enable inputs
+
         inputs.forEach(input => {
-          if (input.id !== 'input-role') { // Keep role field disabled
+          if (input.id !== 'input-role') { 
             input.disabled = false;
           }
         });
         
-        // Show action buttons
         updateBtn.classList.remove('hidden');
         cancelBtn.classList.remove('hidden');
         editModeBtn.classList.add('hidden');
       });
       
-      // Cancel button
       cancelBtn.addEventListener('click', function() {
-        // Disable inputs and reset values
         inputs.forEach(input => {
           input.disabled = true;
         });
         
-        // Reset form with original data
         if (userData) {
           document.getElementById('input-fullname').value = userData.fullname || '';
           document.getElementById('input-email').value = userData.email || '';
@@ -249,13 +241,11 @@
           document.getElementById('input-province').value = userData.province || '';
         }
         
-        // Hide action buttons
         updateBtn.classList.add('hidden');
         cancelBtn.classList.add('hidden');
         editModeBtn.classList.remove('hidden');
       });
 
-      // Update profile info
       updateBtn.addEventListener('click', function() {
         const updatedData = {
           fullname: document.getElementById('input-fullname').value,
@@ -270,18 +260,15 @@
         
         updateProfileInfo(updatedData);
         
-        // Disable inputs after update
         inputs.forEach(input => {
           input.disabled = true;
         });
         
-        // Hide action buttons
         updateBtn.classList.add('hidden');
         cancelBtn.classList.add('hidden');
         editModeBtn.classList.remove('hidden');
       });
 
-      // Logout
       document.getElementById('logout-btn').addEventListener('click', function() {
         localStorage.removeItem('token');
         window.location.href = '/login';
@@ -317,10 +304,8 @@
         return response.json();
       })
       .then(data => {
-        // Update display name after successful update
         document.getElementById('profile-fullname-display').textContent = data.fullname || 'Người dùng';
         
-        // Show success notification
         showNotification('Cập nhật thông tin thành công!', 'success');
       })
       .catch(error => {
@@ -329,8 +314,6 @@
       });
     }
     
-    function showNotification(message, type) {
-      // Create notification element
       const notification = document.createElement('div');
       notification.className = `notification ${type}`;
       notification.innerHTML = `
@@ -338,15 +321,12 @@
         <span>${message}</span>
       `;
       
-      // Add to body
       document.body.appendChild(notification);
       
-      // Show notification
       setTimeout(() => {
         notification.classList.add('show');
       }, 100);
       
-      // Remove after timeout
       setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {

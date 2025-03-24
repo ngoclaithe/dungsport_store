@@ -1,13 +1,12 @@
-// order_cart.js
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Load cart data
+
     updateCartDisplay();
     
-    // Add event listener for the checkout button
     const checkoutBtn = document.getElementById('checkout-btn');
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', function() {
-            window.location.href = '/checkout';  // Navigate to checkout page
+            window.location.href = '/checkout';  
         });
     }
 });
@@ -30,7 +29,6 @@ function updateCartDisplay() {
     let cartHTML = '';
     let subtotal = 0;
 
-    // Generate HTML for each cart item
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
         subtotal += itemTotal;
@@ -60,11 +58,9 @@ function updateCartDisplay() {
         `;
     });
 
-    // Calculate shipping fee (free if subtotal > 500,000 VND)
     const shippingFee = subtotal > 500000 ? 0 : 30000;
     const total = subtotal + shippingFee;
 
-    // Add cart summary and checkout button
     cartHTML += `
         <div class="cart-summary">
             <div class="cart-summary-row">
@@ -85,7 +81,6 @@ function updateCartDisplay() {
 
     cartGrid.innerHTML = cartHTML;
     
-    // Update the cart badge count
     updateCartBadge();
 }
 
@@ -95,7 +90,6 @@ function updateQuantity(index, change) {
     if (cart[index]) {
         cart[index].quantity += change;
         
-        // Ensure quantity doesn't go below 1
         if (cart[index].quantity < 1) {
             cart[index].quantity = 1;
         }
@@ -109,7 +103,6 @@ function updateQuantityInput(index, value) {
     const cart = JSON.parse(localStorage.getItem('dungsport_cart')) || [];
     
     if (cart[index]) {
-        // Convert to integer and ensure it's at least 1
         const quantity = Math.max(1, parseInt(value) || 1);
         cart[index].quantity = quantity;
         

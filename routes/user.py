@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models import db
-from models.staff import Staff
 from models.user import User
 user_bp = Blueprint("user", __name__, url_prefix='/user')
 
@@ -14,7 +13,13 @@ def add_user():
     new_user = User(
         fullname=request.form["fullname"],
         email=request.form["email"],
-        phone=request.form["phone"]
+        phone=request.form["phone"],
+        province=request.form["province"],
+        district=request.form["district"],
+        ward=request.form["ward"],
+        address=request.form["address"],
+        role=request.form["role"],
+        password_hash=request.form["password"] # Trong thực tế, bạn nên mã hóa mật khẩu
     )
     db.session.add(new_user)
     db.session.commit()

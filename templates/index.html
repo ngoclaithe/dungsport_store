@@ -367,7 +367,6 @@
             }, 500);
         }, 5000);
         
-        // Brand Cards Update
         document.addEventListener("DOMContentLoaded", function(){
             const brandCards = document.querySelectorAll('.brand-card');
             const brands = [
@@ -395,7 +394,6 @@
             }, 3000);
         });
 
-        // Toast Function
         function showToast(message, isError = false) {
             const toastContainer = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -410,7 +408,6 @@
             }, 3000);
         }
 
-        // Fetch Featured Products
         async function fetchFeaturedProducts() {
             try {
                 const response = await fetch('/api/featured_products');
@@ -445,7 +442,6 @@
             }
         }
     
-        // Fetch New Arrival Products
         async function fetchNewArrival() {
             try {
                 const response = await fetch('/api/new_arrival');
@@ -477,7 +473,6 @@
             }
         }
 
-        // Fetch Products on Sale
         async function fetchProductsOnSale() {
             try {
                 const response = await fetch('/api/product_on_sale_best');

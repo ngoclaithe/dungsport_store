@@ -83,7 +83,6 @@ function searchProducts(query) {
         });
 }
 
-// Hàm debounce để tránh gửi quá nhiều request
 function debounce(func, wait) {
     let timeout;
     return function(...args) {
@@ -92,16 +91,13 @@ function debounce(func, wait) {
     };
 }
 
-// Thêm sự kiện input với debounce
 const debouncedSearch = debounce(searchProducts, 300);
 
-// Kiểm tra xem searchInput có tồn tại không trước khi thêm sự kiện
 if (searchInput) {
     searchInput.addEventListener('input', function() {
         debouncedSearch(this.value);
     });
 
-    // Cho phép nhấn Enter để kích hoạt tìm kiếm
     searchInput.addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             const query = this.value.trim();
@@ -112,14 +108,12 @@ if (searchInput) {
     });
 }
 
-// Đóng kết quả tìm kiếm khi nhấp chuột bên ngoài
 document.addEventListener('click', function(event) {
     if (searchInput && !searchInput.contains(event.target) && !searchResultsContainer.contains(event.target)) {
         searchResultsContainer.style.display = 'none';
     }
 });
 
-// Sử dụng nút tìm kiếm
 document.querySelector('.search-bar button').addEventListener('click', function () {
     if (searchInput) {
         const query = searchInput.value.trim();
@@ -147,7 +141,6 @@ function loadFavorites() {
     }
 }
 
-// Cập nhật số lượng giỏ hàng
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartBadge = document.querySelector('.fa-shopping-cart').nextElementSibling;

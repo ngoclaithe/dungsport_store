@@ -19,7 +19,7 @@ def admin_required(f):
             flash("Bạn cần đăng nhập để vào trang admin!")
             return redirect(url_for("dashboard.login"))
         user = User.query.get(session['user_id'])
-        if not user or user.role != "admin":
+        if "user_id" not in session or session.get("role") not in ["admin", "staff"]:
             flash("Bạn không có quyền truy cập trang admin!")
             return redirect(url_for("dashboard.login"))
         return f(*args, **kwargs)
@@ -31,15 +31,20 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
         user = User.query.filter_by(email=email).first()
+        
         if user and check_password_hash(user.password_hash, password):
-            if user.role != "admin":
-                flash("Tài khoản không có quyền truy cập admin!")
+            if user.role not in ["admin", "staff"]:  
+                flash("Tài khoản không có quyền truy cập!")
                 return redirect(url_for("dashboard.login"))
+                
             session["user_id"] = user.id_user
+            session["role"] = user.role  
             return redirect(url_for("dashboard.dashboard"))
         else:
             flash("Tên đăng nhập hoặc mật khẩu không đúng!")
+    
     return render_template("admin/login.html")
+
 
 def get_monthly_sales_data():
     months = ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"]
@@ -103,8 +108,10 @@ def dashboard():
         "categories": category_sales["categories"],
         "sales": category_sales["sales"]
     }
+    current_user = User.query.get(session['user_id'])
     
     return render_template("admin/dashboard.html",
+                           current_user=current_user,
                            total_products=total_products,
                            total_orders=total_orders,
                            total_users=total_users,

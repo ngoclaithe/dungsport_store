@@ -14,7 +14,7 @@ from routes.main import main_bp
 from routes.api import api_bp
 from routes.payment import payment_bp
 from routes.inventory_log import inventory_bp
-
+from routes.staff import staff_bp
 from config import Config
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
@@ -34,7 +34,7 @@ app.register_blueprint(main_bp)
 app.register_blueprint(api_bp)
 app.register_blueprint(payment_bp)
 app.register_blueprint(inventory_bp)
-
+app.register_blueprint(staff_bp)
 
 logging.basicConfig(
     level=logging.INFO,

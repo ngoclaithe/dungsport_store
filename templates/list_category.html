@@ -222,7 +222,6 @@
         });
         
         document.addEventListener('DOMContentLoaded', function () {
-            // Lấy id_category từ query string, nếu không có thì mặc định là 1
             const params = new URLSearchParams(window.location.search);
             const id_category = params.get('id_category') || 1;
             
