@@ -44,6 +44,7 @@ def list_category_and_products():
         })
     
     return jsonify(data)
+
 @api_bp.route("/list_category", methods=["GET"])
 def list_category():
     categories = Category.query.with_entities(Category.id_category, Category.category_name).all()
@@ -74,6 +75,42 @@ def sort_categories_by_similarity(categories):
         sorted_list.insert(best_index + 1, category)
     
     return sorted_list
+@api_bp.route("/get_category/<sport_type>", methods=["GET"])
+def get_category(sport_type):
+    """
+    Tìm kiếm các danh mục liên quan đến một loại thể thao cụ thể dựa trên từ khóa đơn giản.
+    
+    Args:
+        sport_type (str): Từ khóa đơn giản như 'bongro', 'pickeball', 'bongchuyen', 'caulong'
+    
+    Returns:
+        JSON: Danh sách các danh mục thỏa mãn điều kiện tìm kiếm
+    """
+    sport_mapping = {
+        "bongro": "bóng rổ",
+        "bongchuyen": "bóng chuyền",
+        "pickeball": "pickleball",
+        "caulong": "cầu lông"
+    }
+    
+    search_keyword = sport_mapping.get(sport_type.lower(), sport_type)
+    
+    categories = Category.query.filter(
+        Category.category_name.ilike(f"%{search_keyword}%")
+    ).all()
+    
+    result = []
+    for category in categories:
+        product_count = len(category.products) if hasattr(category, "products") else \
+            Product.query.filter_by(id_category=category.id_category).count()
+            
+        result.append({
+            "id_category": category.id_category,
+            "category_name": category.category_name,
+            "product_count": product_count
+        })
+    
+    return jsonify(result)
 @api_bp.route("/product_by_category/<int:id_category>", methods=["GET"])
 def list_product_by_id_category(id_category):
     products = Product.query.filter_by(id_category=id_category).all()
